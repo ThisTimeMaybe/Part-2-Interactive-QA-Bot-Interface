@@ -1,0 +1,47 @@
+import gradio as gr
+import cohere
+import pinecone
+from PyPDF2 import PdfReader
+import os
+
+# Initialize Pinecone and Cohere with your API keys
+pinecone.init(api_key='YOUR_PINECONE_API_KEY', environment='YOUR_PINECONE_ENVIRONMENT')
+cohere_client = cohere.Client('YOUR_COHERE_API_KEY')
+
+# Define your Pinecone index
+index_name = 'your-index-name'
+index = pinecone.Index(index_name)
+
+def process_pdf(file):
+    reader = PdfReader(file)
+    text = ""
+    for page in reader.pages:
+        text += page.extract_text()
+    return text
+
+def query_pinecone(query_text):
+    # Function to query Pinecone with the provided query text
+    query_embedding = cohere_client.embed(texts=[query_text]).embeddings[0]
+    results = index.query(query_embedding, top_k=5)
+    return results
+
+def respond_to_query(query_text, file):
+    if file:
+        document_text = process_pdf(file)
+        # You might want to update Pinecone with the new document embeddings
+        # For simplicity, we're just processing the query here
+    else:
+        document_text = "No document provided."
+
+    results = query_pinecone(query_text)
+    response = "Sample response based on the query."
+    return response
+
+iface = gr.Interface(
+    fn=respond_to_query,
+    inputs=[gr.inputs.Textbox(label="Ask a question"), gr.inputs.File(label="Upload PDF")],
+    outputs="text",
+    live=True
+)
+
+iface.launch()

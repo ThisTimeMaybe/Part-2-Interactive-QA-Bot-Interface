@@ -1,0 +1,92 @@
+
+markdown
+
+# Interactive QA Bot Interface
+
+This repository contains the code for Part 2 of the project: an interactive QA bot interface built using Gradio. The interface allows users to interact with a Retrieval-Augmented Generation (RAG) model by uploading a PDF and asking questions.
+
+## Overview
+
+The Interactive QA Bot Interface provides a user-friendly way to interact with the RAG model, utilizing Pinecone for vector database operations and Cohere for generating answers. The interface is powered by Gradio, making it accessible through a web interface.
+
+## Requirements
+
+- Python 3.7 or higher
+- Gradio
+- Pinecone Client
+- Cohere
+- PyPDF2
+
+## Setup and Installation
+
+### 1. Clone the Repository
+
+First, clone the repository to your local machine:
+
+```bash
+git clone https://github.com/ThisTimeMaybe/Part-2-Interactive-QA-Bot-Interface.git
+cd Part-2-Interactive-QA-Bot-Interface
+2. Install Required Packages
+Create a requirements.txt file with the following content:
+
+plaintext
+
+gradio
+pinecone-client
+cohere
+PyPDF2
+Install the required packages using:
+
+bash
+
+pip install -r requirements.txt
+3. Configure API Keys
+Create a file named config.py in the root directory of the project. Add your Pinecone and Cohere API keys to this file:
+
+python
+
+# config.py
+
+PINECONE_API_KEY = 'your-pinecone-api-key'
+COHERE_API_KEY = 'your-cohere-api-key'
+Replace 'your-pinecone-api-key' and 'your-cohere-api-key' with your actual API keys.
+
+4. Run the Interactive QA Bot
+Start the Gradio interface by running:
+
+bash
+
+python app.py
+The application will be available at http://localhost:7860 by default.
+
+Code Explanation
+app.py
+Imports: Includes necessary libraries for Gradio, Pinecone, Cohere, and PDF processing.
+process_pdf(pdf_file): Extracts text from the uploaded PDF file.
+get_embeddings(text): Generates embeddings for the extracted text using Cohere.
+query_index(question): Queries the Pinecone index to retrieve relevant information based on the question.
+qa_interface(pdf_file, question): Main function that integrates PDF processing, embedding retrieval, and querying to provide answers.
+Gradio Interface: Defines the interactive elements, including file upload and question input, and integrates with the qa_interface function.
+config.py
+Contains configuration settings for API keys required for Pinecone and Cohere.
+
+Usage
+Upload a PDF File
+
+Click on the "Upload PDF" button to select and upload a PDF file from your local machine.
+
+Ask a Question
+
+Enter your question in the textbox provided and click "Submit."
+
+View Results
+
+The QA bot will process the uploaded PDF and generate a response based on your question. The answer will be displayed on the interface.
+
+License
+This project is licensed under the MIT License. See the LICENSE file for details.
+
+Acknowledgements
+Pinecone: Provides the vector database for storing and querying document embeddings.
+Cohere: Used for generating coherent and relevant responses.
+Gradio: Facilitates the creation of the interactive web interface.
